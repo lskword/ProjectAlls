@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script src="./lskword.js" charset="utf-8"></script>
+  <script type="text/javascript">
+  lsk.ajax({
+    url: 'http://h6.duchengjiu.top/shop/api_user.php',
+    data: {
+      status: 'login',
+      username: 'lsk1234321',
+      password: 'lsk1234321'
+    },
+    dataType: 'json',
+    type: 'POST',
+    suc: function (json) {
+      console.log(json);
+    }
+  })
+  </script>
+</body>
+</html>
