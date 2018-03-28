@@ -11,7 +11,7 @@
 	BackToTop.prototype.bindScrollEvent = function() {
 		var self = this;
 		window.onscroll = function(){
-		  var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+		  var scrollTop = document.documentElement.scrollTop;
 		  if (scrollTop > 500) {
 			self.dom.style.display = 'block';
 		  } else {

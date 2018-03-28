@@ -3,7 +3,7 @@
     /*吸顶轮子效果
     str 传选择器，最好是ID*/
     scroll: function (str) {
-      var oDom = document.querySelector(str) || document.getElementById(str);
+      var oDom = document.querySelector(str);
       var getAllTop = getAllTop(oDom);
       function getAllTop(oDom) {
         var strTop = oDom.offsetTop;
@@ -13,7 +13,7 @@
         return strTop
       }
       window.onscroll = function () {
-        var scrollTop = document.documentElement.scrollTop;
+        var scrollTop = document.documentElement.scrollTop || document.body.scrollTop
         if (scrollTop >= getAllTop) {
           oDom.style.position = "fixed";
           oDom.style.marginTop = 0;
@@ -30,13 +30,13 @@
       animatetime 动画时间，默认为1000
       */
     backtotop: function (id, scrolltop, target, animatetime) {
-      id          = id || '#backtotop';
-      scrolltop   = scrolltop || 500;
-      target      = target || 0;
+      id         = id || '#backtotop';
+      scrolltop  = scrolltop || 500;
+      target     = target || 0;
       animatetime = animatetime || 1000;
-      var oBack = document.querySelector(id) || document.getElementById(id);
+      var oBack = document.querySelector(id);
       window.onscroll = function(){
-        var scrollTop = document.documentElement.scrollTop;
+        var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
         if (scrollTop > scrolltop) {
           oBack.style.display = 'block';
         } else {
@@ -56,7 +56,7 @@
         }
         var frame = 0;
         var frames = time / interval;
-        var start = document.documentElement.scrollTop;
+        var start = document.body.scrollTop || document.documentElement.scrollTop;
         var distance = target - start;
         var timer;
         clearInterval(timer);
@@ -69,7 +69,7 @@
           //第二个b表示起始位置
           //第三个c表示变化量
           //第四个d表示总帧数
-          document.documentElement.scrollTop = CubicEaseInOut(frame, start, distance, frames);
+          document.body.scrollTop = document.documentElement.scrollTop = CubicEaseInOut(frame, start, distance, frames);
         }, interval);
 
         function CubicEaseInOut(t,b,c,d){
@@ -163,7 +163,7 @@
       }
 
     },
-
+    /*原生ajax请求数据*/
     ajax: function (obj) {
       var url = obj.url,
           data = obj.data,
@@ -203,33 +203,40 @@
         return getStr.join('&')
       }
     },
-    // input 只能数字输出，小数不能超过两位
-    decimalMaxSecond: function(obj) {
-      var objs = document.querySelector(obj);
-      objs.onkeyup = function (e) {
-        var that = this
-        event = window.event || event;
-        // 允许左右方向键移动
-        if (event.keyCode == 37 || event.keyCode == 39) {
-          return
+    /*懒加载*/
+    lazyload: function() {
+      var oImg = document.querySelectorAll('img')
+      var oImg_sum = 0 //当前加载到的位置，避免从第一张图片开始遍历
+      let W_height = document.documentElement.clientHeight ||
+        document.body.clientHeight
+      let oScrollTop = document.documentElement.scrollTop ||
+        document.body.scrollTop
+      time(oImg, oImg_sum, W_height, oScrollTop)
+      window.onscroll = function() {
+        let oScrollTop = document.documentElement.scrollTop ||
+          document.body.scrollTop
+          lsk.lazyload.call(this, oImg, oImg_sum, W_height, oScrollTop)
+      }
+      function time (oImg, oImg_sum, W_height, oScrollTop) {
+        for (var i = oImg_sum; i < oImg.length; i++) {
+          (function(i) {
+            function getAllTop(dom) {
+              var scrollTop = dom.scrollTop
+              while (dom = dom.offsetParent) {
+                scrollTop += dom.offsetParent
+              }
+              return scrollTop
+            }
+            if (oImg[i].offsetTop < W_height + oScrollTop) {
+              if (oImg[i].getAttribute('src') === '') {
+                oImg[i].src = oImg[i].getAttribute('guoyu-src')
+              }
+              oImg_sum = i + 1
+            }
+          }(i));
         }
-        that.value = that.value.replace(/[^\d.]/g, "")
-          .replace(/^\./g, "")
-          .replace(/\.{2,}/g, ".")
-          .replace(".", "$#$")
-          .replace(/\./g, "")
-          .replace("$#$", ".")
-          .replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3')
-			// 限制文本的长度
-          if (that.value.length > 5) {
-            that.value = that.value.substring(0, that.value.length-1)
-          }
       }
-      objs.blur = function () {
-        var that = this;
-        that.value = that.value.replace(/\.$/g, "")
-      }
-  }
+    }
   }
   window.lsk = lsk
   lsk.author = 'lskword'
@@ -274,29 +281,20 @@ Scroll.prototype = {
 }
 }());
 //返回顶部面向对象
-/**
- * [BackToTop 返回顶部]
- * @param       {[type]} selector [元素对象id]
- * @param       {[type]} position [返回的位置]
- * @param       {[type]} delay    [延迟的时间]
- * @constructor
- */
-function BackToTop(selector, position, delay) {
+function BackToTop(selector) {
   this.dom = null;
   this.selector = selector;
-  this.position = position || 0;
-  this.delay = delay || 1000
   this.init();
   this.bindEvent();
   this.bindScrollEvent();
 }
 BackToTop.prototype.init = function() {
-  this.dom = document.querySelector(this.selector) || document.getElementById(this.selector);
+  this.dom = document.querySelector(this.selector);
 }
 BackToTop.prototype.bindScrollEvent = function() {
   var self = this;
   window.onscroll = function(){
-    var scrollTop = document.documentElement.scrollTop;
+    var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
     if (scrollTop > 500) {
     self.dom.style.display = 'block';
     } else {
@@ -305,16 +303,15 @@ BackToTop.prototype.bindScrollEvent = function() {
   }
 }
 BackToTop.prototype.bindEvent = function() {
-  var self = this;
    this.dom.onclick = function() {
-    scrollAnimate(self.position, self.delay);
+    scrollAnimate(0, 1000);
   }
 
   function scrollAnimate(target, timer) {
     var interval = 20;
     var frame = 0;
     var frames = timer / interval;
-    var start = document.documentElement.scrollTop;
+    var start = document.body.scrollTop || document.documentElement.scrollTop;
     var distance = target - start;
     var timer;
     clearInterval(timer);
@@ -336,14 +333,7 @@ BackToTop.prototype.bindEvent = function() {
     }
   }
 }
-/**
- * [Zoom 放大镜]
- * @param       {[type]} smallPicSelector [小图片元素]
- * @param       {[type]} bigPicSelector   [大图片元素]
- * @param       {[type]} zoomSelector     [放大镜元素]
- * @param       {[type]} bigImgPath       [需要放大图片位置]
- * @constructor
- */
+/*面向对象放大镜*/
 
 function Zoom(smallPicSelector, bigPicSelector, zoomSelector, bigImgPath) {
   this.oSmallPic = document.querySelector(smallPicSelector);

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style media="screen">
+    div {
+      width: 100px;
+      height: 4000px;
+    }
+
+    img {
+      width: 400px;
+      height: 400px;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <img src="" guoyu-src="http://pic4.nipic.com/20091217/3885730_124701000519_2.jpg">
+    <img src="" guoyu-src="http://img.taopic.com/uploads/allimg/120727/201995-120HG1030762.jpg">
+    <img src="" guoyu-src="http://www.taopic.com/uploads/allimg/140421/318743-140421213T910.jpg">
+    <img src="" guoyu-src="http://img07.tooopen.com/images/20170316/tooopen_sy_201956178977.jpg">
+    <img src="" guoyu-src="http://pic2.ooopic.com/12/22/94/30b1OOOPIC5c.jpg">
+    <img src="" guoyu-src="http://pic4.nipic.com/20091217/3885730_124701000519_2.jpg">
+    <img src="" guoyu-src="http://img.taopic.com/uploads/allimg/120727/201995-120HG1030762.jpg">
+    <img src="" guoyu-src="http://www.taopic.com/uploads/allimg/140421/318743-140421213T910.jpg">
+    <img src="" guoyu-src="http://img07.tooopen.com/images/20170316/tooopen_sy_201956178977.jpg">
+    <img src="" guoyu-src="http://pic2.ooopic.com/12/22/94/30b1OOOPIC5c.jpg">
+    <img src="" guoyu-src="http://pic4.nipic.com/20091217/3885730_124701000519_2.jpg">
+    <img src="" guoyu-src="http://img.taopic.com/uploads/allimg/120727/201995-120HG1030762.jpg">
+    <img src="" guoyu-src="http://www.taopic.com/uploads/allimg/140421/318743-140421213T910.jpg">
+    <img src="" guoyu-src="http://img07.tooopen.com/images/20170316/tooopen_sy_201956178977.jpg">
+    <img src="" guoyu-src="http://pic2.ooopic.com/12/22/94/30b1OOOPIC5c.jpg">
+    <img src="" guoyu-src="http://pic4.nipic.com/20091217/3885730_124701000519_2.jpg">
+    <img src="" guoyu-src="http://img.taopic.com/uploads/allimg/120727/201995-120HG1030762.jpg">
+    <img src="" guoyu-src="http://www.taopic.com/uploads/allimg/140421/318743-140421213T910.jpg">
+    <img src="" guoyu-src="http://img07.tooopen.com/images/20170316/tooopen_sy_201956178977.jpg">
+    <img src="" guoyu-src="http://pic2.ooopic.com/12/22/94/30b1OOOPIC5c.jpg">
+    <progress value="0" max="100">0%</progress>
+    <input type="range" name="" value="">
+  </div>
+  <!-- <script type="text/javascript">
+    (function() {
+      var lsk = window.lsk = {
+        lazyload: function() {
+          var oImg = document.querySelectorAll('img')
+          var oImg_sum = 0 //当前加载到的位置，避免从第一张图片开始遍历
+          let W_height = document.documentElement.clientHeight ||
+            document.body.clientHeight
+          let oScrollTop = document.documentElement.scrollTop ||
+            document.body.scrollTop
+          time(oImg, oImg_sum, W_height, oScrollTop)
+          window.onscroll = function() {
+            let oScrollTop = document.documentElement.scrollTop ||
+              document.body.scrollTop
+              lsk.lazyload.call(this, oImg, oImg_sum, W_height, oScrollTop)
+          }
+          function time (oImg, oImg_sum, W_height, oScrollTop) {
+            for (var i = oImg_sum; i < oImg.length; i++) {
+              (function(i) {
+                function getAllTop(dom) {
+                  var scrollTop = dom.scrollTop
+                  while (dom = dom.offsetParent) {
+                    scrollTop += dom.offsetParent
+                  }
+                  return scrollTop
+                }
+                if (oImg[i].offsetTop < W_height + oScrollTop) {
+                  if (oImg[i].getAttribute('src') === '') {
+                    oImg[i].src = oImg[i].getAttribute('guoyu-src')
+                  }
+                  oImg_sum = i + 1
+                }
+              }(i));
+            }
+          }
+        }
+      }
+    }());
+    lsk.lazyload()
+  </script>*/ -->
+  <script src="lskword.js" charset="utf-8"></script>
+  <script type="text/javascript">
+    lsk.lazyload()
+  </script>
+</body>
+
+</html>

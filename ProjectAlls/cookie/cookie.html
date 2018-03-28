@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <input type="text" name="use" value="">
+  <input type="password" name="pwd" value="">
+  <button type="button" name="button">提交</button>
+  <script type="text/javascript">
+
+    (function() {
+      'use strict';
+      var lsk = {
+        setCookie: function (use, pwd) {
+          console.log(document)
+          document.cookie = "|use" + "=" +  use.value + "&";
+          document.cookie = "|pwd" + "=" + pwd.value + "&";
+          console.log(document.cookie);
+        }
+      }
+      window.lsk = lsk;
+    }());
+    var oBtn = document.querySelector('button')
+    oBtn.onclick = function () {
+      var use = document.querySelector('input[name=use]')
+      var pwd = document.querySelector('input[name=pwd]')
+      lsk.setCookie(use, pwd)
+    }
+  </script>
+</body>
+
+</html>
