@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script type="text/javascript">
+    function initJcrop() {
+      console.log("数据监测");
+      $('#cropbox').Jcrop({
+        // 选框选定的事件
+        onSelect: updateCoords,
+        // 选框宽高比
+        aspectRatio: square,
+        boxWidth: 500,
+        boxHeight: 300,
+        minSize: [350, 220],
+        maxSize: [1055, 660]
+      }, function() {
+        //图片实际尺寸
+        var bb = this.getBounds();
+        var bWidth = Number(bb[0]);
+        var bHeight = Number(bb[1]);
+        this.setSelect([0, 0, bWidth, bHeight]);
+        var ss = this.getWidgetSize();
+        var data = document.getElementById("myCan").toDataURL();
+        $("#myCanImg").attr("src", data)
+        // console.log(ss, "实际图片显示尺寸" , bb, "实际图片尺寸");
+      });
+    }
+
+    function updateCoords(c) {
+      var img = document.getElementById("cropbox");
+      var ctx = document.getElementById("myCan").getContext("2d");
+      $("#myCan").attr({
+        width: c.w,
+        height: c.h
+      })
+      //img,开始剪切的x,Y坐标宽高，放置图像的x,y坐标宽高。
+      ctx.drawImage(img, c.x, c.y, c.w, c.h, 0, 0, c.w, c.h);
+      var data = document.getElementById("myCan").toDataURL();
+      $("#myCanImg").attr("src", data)
+    }
+  </script>
+</body>
+
+</html>

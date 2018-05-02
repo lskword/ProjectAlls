@@ -292,36 +292,38 @@
 </head>
 
 <body>
-
   <div class="uploadPics">
     <img alt="" onclick="ClosePage()" />
     <div class="picTil">上传头像</div>
-    <div class="picCont" style="width:300px;height:300px;margin:20px auto 0;padding:0;">
-      <div id=imgfield style=overflow:hidden;width:100%;height:100%></div>
+    <div class="picCont">
+      <div id=imgfield></div>
     </div>
     <div class="picFooter">
-      <input type="file" id="fileimg" name="fileimg" style="display:none" onchange="imgchange()" />
+      <input type="file" id="fileimg" name="fileimg"  onchange="imgchange()" />
       <span class="btn upload" onclick="getimg()">上传</span>
       <span class="btn confirm" onclick="subform()">确认</span>
     </div>
   </div>
-
   <canvas id="myCan" width="200" height="200"></canvas>
-
 </body>
-<script type="text/javascript" src="./js/jquery.min.js"></script>
-<script type="text/javascript" src="./js/jquery.Jcrop.js"></script>
-
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.Jcrop.js"></script>
 <script type="text/javascript">
   function subform() {
     if ($("#imgfield").html()) {
+      var localimg = $("#fileimg").get(0).files[0];
       //获取裁剪完后的base64图片url,转换为blob
       console.dir(document.getElementById("myCan"));
       var data = document.getElementById("myCan").toDataURL();
       var formData = new FormData();
-      formData.append("File", dataURLtoBlob(data))
+      console.log(data);
+      data = data.replace(/^data:image\/(jpeg|png|gif|jpg);base64,/, '')
+      console.log(data);
+      formData.append("base64Str", data)
+      formData.append("name", localimg.name)
       var xhr = new XMLHttpRequest();
-      var apiurl = "http://192.168.1.222:8077/bdApiCommonUtil/up-file"; //上传图片的api接口，自行填写
+      var apiurl = "http://127.0.0.1:8888/commonUtil/up-file?dirType=banner";
+      //上传图片的api接口，自行填写
       xhr.open('POST', apiurl, true);
       xhr.send(formData);
       xhr.onreadystatechange = function() {
@@ -347,7 +349,6 @@
     if (!localimg) {
       return;
     }
-    console.log(localimg);
     var fileName = localimg.name;
     var fileSize = localimg.size;
     var fileType = fileName.substring(fileName.lastIndexOf('.'), fileName.length).toLowerCase();
@@ -363,6 +364,7 @@
     }
 
     var reader = new FileReader();
+    console.log(reader);
     //将文件读取为DataURL
     reader.readAsDataURL(localimg);
     reader.onload = function(e) {
@@ -376,22 +378,23 @@
 
   function initJcrop() {
     $('#cropbox').Jcrop({
+      // 选框选定的事件
       onSelect: updateCoords,
+      // 选框宽高比
       aspectRatio: 1,
       boxWidth: 300,
       boxHeight: 300
     }, function() {
-
       //图片实际尺寸
       var bb = this.getBounds();
+      console.log(bb);
       var bWidth = Number(bb[0]) / 2;
       var bHeight = Number(bb[1]) / 2;
       this.setSelect([0, 0, bWidth, bHeight]);
       var ss = this.getWidgetSize();
+      console.log(ss[1]);
       var aheight = (300 - Number(ss[1])) / 2 + "px";
       $(".jcrop-holder").css("margin-top", aheight);
-
-
     });
   }
 
@@ -419,4 +422,5 @@
     });
   }
 </script>
+
 </html>

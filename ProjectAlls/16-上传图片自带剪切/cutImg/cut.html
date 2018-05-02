@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" id="description1" content="1">
+  <meta name="renderer" content="webkit">
+  <meta name="format-detection" content="telephone=no">
+  <title>Document</title>
+  <link rel="stylesheet" href="./css/cut.css">
+  <style media="screen">
+  </style>
+</head>
+
+<body>
+  <div id="cut_img_box">
+      <div class="uploadPics">
+          <img onclick="ClosePage()"/>
+          <div class="picTil">
+              <span style="float: left">上传头像</span>
+              <button class="close" onclick="closeModel()">
+                关闭
+              </button>
+          </div>
+
+          <div class="picCont">
+              <div id=imgfield ></div>
+          </div>
+          <div class="picFooter">
+              <input type="file" id="fileImg" name="fileimg" onchange="imgchange()"/>
+              <span id='uploads' class="btn_h upload" >选择图片</span>
+              <span id="confirm"  class="btn_h confirm" >上传</span>
+          </div>
+              <img id="myCanImg" src="" alt="">
+          <div style="display: none;">
+              <canvas id="myCan" ></canvas>
+          </div>
+
+
+      </div>
+  </div>
+</body>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.Jcrop.js"></script>
+<script src="./js/cut.js" charset="utf-8"></script>
+<script type="text/javascript">
+  // 上传文件所需要获取的元素
+  var oImg = document.getElementById("fileImg"),
+      oUploads = document.getElementById("uploads"),
+      oImgShow = document.querySelector("#imgfield"),
+      oCutShow = document.getElementById("myCan"),
+      oConfirm = document.getElementById("confirm"),
+      oImgs = document.getElementById("myCanImg");
+  // 上传文件按钮（显示的）
+  oUploads.onclick = function() {
+    oImg.click()
+  }
+  // 隐藏上传文件存储的input.onchange
+  oImg.onchange = function () {
+    var that = this;
+    oImgCutFiled = new imgCutFiled({
+      fileImg: this.files[0],  //隐藏上传文件存储的input
+      url: "http://192.168.1.63:8080/commonUtil/up-file?dirType=banner", //上传地址
+      fileImgShow: oImgShow,  //图片显示元素
+      cutShow: oCutShow,      //裁剪过后的元素
+      upLoad: oConfirm,       //提交按钮
+      ImgShow: oImgs,         //图片预览的地方
+      JcropMinSize: [240, 240], //图片最小尺寸
+      JcropMaxSize: [1024, 900], //图片最大尺寸
+      JcropAspectRatio: 1,       // 0 选框不等比缩放  1选框等比缩放
+      success: function (res) {
+        console.log("我是上传图片回调函数");
+        console.log(res);
+      }
+    });
+  }
+</script>
+</html>
