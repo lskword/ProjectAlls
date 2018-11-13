@@ -1,5 +1,32 @@
 (function () {
   var lsk = {
+	/**
+	*针对数组进行拆分封装	                                    转变成
+	*将数组中相同的 eg: [{key: a, value: b1},{key: a, value: b2}]   =>   [{key: a, list:[b1, b2]}]
+	*/
+	 // 快速抽取法
+	/**
+	*name :是你需要拆分出来的key 
+	*data : 是你需要拆分的数组
+	*obj : 是你拆分完过后的数据
+	*/
+	extractSort({name, data}) {
+	    var obj = []
+	    for (var key of data) {
+		var num = 0
+		for (var item of obj) {
+		    if (key[name] === item[name]) {
+			item.list.push(key)
+			num++
+			break;
+		    }
+		}
+		if (num === 0) {
+		    obj.push({[name]: key[name], list: [key]})
+		} 
+	    }
+	    console.log(obj)
+	},
     /*吸顶轮子效果
     str 传选择器，最好是ID*/
     scroll: function (str) {
